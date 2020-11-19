@@ -2,6 +2,9 @@ package io.eskalate.A2SVinterview.controllers
 
 import io.eskalate.A2SVinterview.models.User
 import io.eskalate.A2SVinterview.repositories.UserRepository
+import kotlinx.coroutines.reactive.awaitFirst
+import kotlinx.coroutines.reactive.awaitFirstOrNull
+import kotlinx.coroutines.reactive.awaitLast
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -25,14 +28,14 @@ class UserControllerTest @Autowired constructor(
     fun setUp(){
         runBlocking {
             users = createUsers(5)
-            users.forEach { user -> repository.insert(user) }
+            repository.saveAll(users).awaitLast()
         }
     }
 
     @AfterEach
     fun tearDown(){
         runBlocking {
-            users.forEach {user -> repository.delete(user.id)}
+            repository.deleteAll(users).awaitFirstOrNull()
         }
     }
     fun createUsers(amount: Int): List<User> {
@@ -90,7 +93,7 @@ class UserControllerTest @Autowired constructor(
                 throw e
             }
             finally {
-                repository.delete(newUser.id)
+                repository.deleteById(newUser.id).awaitFirstOrNull()
             }
 
         }
@@ -104,15 +107,15 @@ class UserControllerTest @Autowired constructor(
                     "RandomPerson2",
                     "ForgottenPassword"
             )
-            repository.insert(newUser)
+            repository.save(newUser).awaitFirst()
             try{
                 client.delete()
                         .uri("/user/${newUser.id}")
                         .exchange()
                         .expectStatus().isAccepted
-                assertThat(repository.findOne(newUser.id)).isNull()
+                assertThat(repository.findById(newUser.id).awaitFirstOrNull()).isNull()
             } catch (e: Exception){
-                repository.delete(newUser.id)
+                repository.deleteById(newUser.id).awaitFirst()
                 throw e
             }
 
@@ -124,10 +127,10 @@ class UserControllerTest @Autowired constructor(
         runBlocking {
             val newUser = User(
                     UUID.randomUUID().toString(),
-                    "RandomPerson2",
+                    "RandomPerson3",
                     "ForgottenPassword"
             )
-            repository.insert(newUser)
+            repository.save(newUser).awaitFirst()
             newUser.password = "ToBeForgottenPassword"
             try {
                 client.put()
@@ -139,7 +142,7 @@ class UserControllerTest @Autowired constructor(
             } catch (e: Exception) {
                 throw e
             } finally {
-                repository.delete(newUser.id)
+                repository.deleteById(newUser.id).awaitFirstOrNull()
             }
         }
     }
