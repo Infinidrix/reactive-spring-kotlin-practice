@@ -16,6 +16,6 @@ data class User(
         var password: String,
         var firstName: String? = null,
         var surname: String? = null,
-        var gender: Gender? = null,
+        var gender: Gender = Gender.UNDISCLOSED,
         var birthday: Date? = null
 )

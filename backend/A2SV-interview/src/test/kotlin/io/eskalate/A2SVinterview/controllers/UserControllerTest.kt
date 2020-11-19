@@ -3,19 +3,13 @@ package io.eskalate.A2SVinterview.controllers
 import io.eskalate.A2SVinterview.models.User
 import io.eskalate.A2SVinterview.repositories.UserRepository
 import kotlinx.coroutines.runBlocking
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.data.repository.Repository
-import org.springframework.http.HttpStatus
 import org.springframework.test.web.reactive.server.WebTestClient
-import org.springframework.test.web.reactive.server.body
 import org.springframework.test.web.reactive.server.expectBody
 import org.springframework.test.web.reactive.server.expectBodyList
 import java.util.*
