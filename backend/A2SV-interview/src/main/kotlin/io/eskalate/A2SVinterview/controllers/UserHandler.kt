@@ -14,6 +14,7 @@ import java.net.URI
 class UserHandler (private val userRepository: UserRepository){
     // TODO: Hash Password
     // TODO: Auth
+    // TODO: Unique Username
     suspend fun findAll(request: ServerRequest) =
             ok().bodyAndAwait(userRepository.findAll().asFlow())
 

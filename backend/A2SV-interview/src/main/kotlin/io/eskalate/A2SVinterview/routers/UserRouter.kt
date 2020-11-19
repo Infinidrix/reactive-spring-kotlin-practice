@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.server.coRouter
 class UserRouter {
 
     @Bean
-    fun routes(userHandler: UserHandler) = coRouter {
+    fun userRoutes(userHandler: UserHandler) = coRouter {
         "/user".nest {
             GET("/", userHandler::findAll)
             GET("/{id}", userHandler::findOne)
