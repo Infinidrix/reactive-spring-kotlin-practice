@@ -26,11 +26,11 @@ class UserControllerTest @Autowired constructor(
         val repository: UserRepository
 ){
 
-    lateinit var users: List<User>;
+    lateinit var users: List<User>
     @BeforeEach
     fun setUp(){
         runBlocking {
-            users = createUsers(5);
+            users = createUsers(5)
             users.forEach { user -> repository.insert(user) }
         }
     }
@@ -110,6 +110,7 @@ class UserControllerTest @Autowired constructor(
                     "RandomPerson2",
                     "ForgottenPassword"
             )
+            repository.insert(newUser)
             try{
                 client.delete()
                         .uri("/user/${newUser.id}")
